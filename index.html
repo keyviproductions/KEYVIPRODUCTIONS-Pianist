@@ -3,71 +3,119 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KEYVI PRODUCTIONS | Live Hub</title>
+    <title>KEYVI PRODUCTIONS | Piano Music</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;700&display=swap" rel="stylesheet">
     <style>
-        :root { --bg: #050505; --gold: #D4AF37; --blue: #0077FF; --card: #121212; --red: #ff4444; }
-        body { background: var(--bg); color: white; font-family: 'Inter', sans-serif; margin: 0; padding-bottom: 150px; }
+        :root { --gold: #D4AF37; --bg: #000000; --card: #111111; }
+        body { background-color: var(--bg); color: white; font-family: 'Montserrat', sans-serif; margin: 0; overflow-x: hidden; }
         
-        header { padding: 40px; text-align: center; border-bottom: 1px solid #222; background: #000; }
-        h1 { color: var(--gold); font-size: 2rem; letter-spacing: 4px; margin: 0; }
-
-        #gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; padding: 40px; max-width: 1400px; margin: auto; }
-        
-        .card { background: var(--card); border-radius: 12px; overflow: hidden; border: 1px solid #222; position: relative; transition: 0.3s; }
-        .card:hover { border-color: var(--gold); }
-        
-        /* The Delete Button (Hidden unless Logged In) */
-        .delete-btn { 
-            position: absolute; top: 10px; right: 10px; 
-            background: var(--red); color: white; border: none; 
-            border-radius: 50%; width: 30px; height: 30px; 
-            cursor: pointer; font-weight: bold; display: none; z-index: 10;
+        /* Hero Section (Like PianoHands) */
+        .hero {
+            height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1520523839897-bd0b52f945a0?q=80&w=2000&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            border-bottom: 3px solid var(--gold);
         }
+        .hero h1 { font-size: 4rem; letter-spacing: 10px; margin: 0; text-transform: uppercase; color: var(--gold); }
+        .hero p { font-size: 1.2rem; letter-spacing: 3px; margin-top: 10px; opacity: 0.8; }
 
-        .thumb { width: 100%; aspect-ratio: 1/1; object-fit: cover; background: #1a1a1a; }
-        .info { padding: 15px; }
-        .info h3 { margin: 0 0 10px 0; color: var(--gold); font-size: 1.1rem; }
-        audio { width: 100%; height: 35px; filter: invert(1); }
+        /* Navigation */
+        nav { background: rgba(0,0,0,0.9); padding: 20px; text-align: center; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid #222; }
+        nav a { color: white; text-decoration: none; margin: 0 20px; font-weight: bold; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 2px; }
+        nav a:hover { color: var(--gold); }
 
-        #forge { position: fixed; bottom: 0; width: 100%; background: #000; border-top: 3px solid var(--gold); padding: 20px; display: none; z-index: 1000; }
-        .forge-wrap { max-width: 1000px; margin: auto; display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
-        input, textarea { background: #111; border: 1px solid #333; color: white; padding: 10px; border-radius: 8px; width: 100%; box-sizing: border-box; }
-        .btn { padding: 12px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; margin-top: 5px; width: 100%; }
+        /* About Section */
+        .section-title { text-align: center; padding: 60px 20px 20px; color: var(--gold); font-size: 2rem; letter-spacing: 5px; text-transform: uppercase; }
+        .about-text { max-width: 800px; margin: auto; text-align: center; line-height: 1.8; opacity: 0.9; padding: 0 20px 60px; }
+
+        /* Gallery Grid */
+        #gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; padding: 40px; max-width: 1200px; margin: auto; }
+        .card { background: var(--card); border-radius: 0; border: 1px solid #222; position: relative; transition: 0.4s; }
+        .card:hover { border-color: var(--gold); transform: translateY(-10px); }
+        .thumb { width: 100%; aspect-ratio: 16/9; object-fit: cover; opacity: 0.7; }
+        .card-info { padding: 20px; text-align: center; }
+        .card-info h3 { margin: 0 0 15px 0; color: var(--gold); letter-spacing: 2px; }
+        audio { width: 100%; filter: invert(1); }
+        .delete-btn { position: absolute; top: 10px; right: 10px; background: red; color: white; border: none; cursor: pointer; display: none; padding: 5px 10px; font-weight: bold; }
+
+        /* Footer */
+        footer { background: #000; padding: 60px 20px; text-align: center; border-top: 1px solid #222; }
+        .footer-socials { margin-bottom: 20px; }
+        .footer-socials a { color: var(--gold); margin: 0 15px; text-decoration: none; font-size: 1.5rem; }
         
+        /* Admin Forge */
+        #forge { position: fixed; bottom: 0; width: 100%; background: #000; border-top: 3px solid var(--gold); padding: 20px; display: none; z-index: 1000; }
+        .forge-wrap { max-width: 1000px; margin: auto; display: flex; gap: 20px; }
+        input, textarea { background: #111; border: 1px solid #333; color: white; padding: 10px; width: 100%; border-radius: 4px; margin-bottom: 10px; }
+        .btn { padding: 10px 20px; background: var(--gold); color: black; border: none; font-weight: bold; cursor: pointer; text-transform: uppercase; width: 100%; }
         #login-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: none; justify-content: center; align-items: center; z-index: 9999; }
     </style>
 </head>
 <body>
 
-<header><h1>KEYVI PRODUCTIONS</h1></header>
+<section class="hero" id="home">
+    <h1>KEYVI PRODUCTIONS</h1>
+    <p>PIANIST • PRODUCER • ARTIST</p>
+</section>
+
+<nav>
+    <a href="#home">Home</a>
+    <a href="#about">About</a>
+    <a href="#music">Music</a>
+    <a href="mailto:your-email@gmail.com">Contact</a>
+</nav>
+
+<section id="about">
+    <div class="section-title">Welcome</div>
+    <div class="about-text">
+        Welcome to Keyvi Productions: Your home for professional piano covers and arrangements. 
+        Enjoy the latest favorites, updated constantly. Whether you are looking for inspiration 
+        or a relaxing atmosphere, you've come to the right place.
+    </div>
+</section>
+
+<div class="section-title" id="music">Latest Music</div>
 <div id="ai-layer"></div>
 <main id="gallery"></main>
 
-<div style="text-align:center; padding: 40px;"><button onclick="document.getElementById('login-modal').style.display='flex'" style="background:none; border:none; color:#444; cursor:pointer;">Admin</button></div>
+<footer>
+    <div class="footer-socials">
+        <a href="#">YouTube</a>
+        <a href="#">Instagram</a>
+        <a href="#">Apple Music</a>
+    </div>
+    <p style="color: #444;">&copy; 2025 KEYVI PRODUCTIONS. All Rights Reserved.</p>
+    <button onclick="document.getElementById('login-modal').style.display='flex'" style="background:none; border:none; color:#222; cursor:pointer;">Admin</button>
+</footer>
 
 <div id="login-modal">
-    <div style="background:#111; padding:30px; border-radius:15px; border:1px solid var(--gold); text-align:center;">
-        <input type="password" id="pass" placeholder="Enter Code">
-        <button class="btn" style="background:var(--gold)" onclick="doLogin()">UNLOCK</button>
+    <div style="background:#111; padding:30px; border-radius:10px; border:1px solid var(--gold); text-align:center;">
+        <input type="password" id="pass" placeholder="Enter Key">
+        <button class="btn" onclick="doLogin()">Unlock</button>
     </div>
 </div>
 
 <div id="forge">
     <div class="forge-wrap">
-        <div class="col">
-            <h4 style="color:var(--blue); margin:5px;">AI ARCHITECT</h4>
-            <textarea id="ai-in" placeholder="Ask AI to change something..."></textarea>
-            <button class="btn" style="background:var(--blue); color:white" onclick="fireAI()">Apply Change</button>
+        <div style="flex:1">
+            <h4 style="color:var(--gold)">AI ARCHITECT</h4>
+            <textarea id="ai-in" placeholder="Ask AI to redesign site..."></textarea>
+            <button class="btn" onclick="fireAI()">Update Site</button>
         </div>
-        <div class="col">
-            <h4 style="color:var(--gold); margin:5px;">UPLOAD TRACK</h4>
+        <div style="flex:1">
+            <h4 style="color:var(--gold)">NEW TRACK</h4>
             <input type="text" id="track-title" placeholder="Title">
             <input type="file" id="f-audio" accept="audio/*">
             <input type="file" id="f-img" accept="image/*">
-            <button class="btn" style="background:var(--gold)" onclick="publishTrack()">Publish Live</button>
+            <button class="btn" onclick="publishTrack()">Publish Live</button>
         </div>
     </div>
-    <div id="log" style="text-align:center; font-size:12px; margin-top:10px; color:var(--gold);">Ready.</div>
 </div>
 
 <script type="module">
@@ -91,7 +139,7 @@
 
     let isAdmin = false;
 
-    // --- RENDER GALLERY ---
+    // Load Music
     onSnapshot(query(collection(db, "releases"), orderBy("time", "desc")), (snap) => {
         const gal = document.getElementById('gallery');
         gal.innerHTML = "";
@@ -102,7 +150,7 @@
                 <div class="card">
                     <button class="delete-btn" style="display:${isAdmin?'block':'none'}" onclick="deleteTrack('${id}')">X</button>
                     <img src="${data.thumb}" class="thumb">
-                    <div class="info">
+                    <div class="card-info">
                         <h3>${data.title}</h3>
                         <audio controls src="${data.url}"></audio>
                     </div>
@@ -110,58 +158,53 @@
         });
     });
 
-    // --- ACTIONS ---
+    // Admin Functions
     window.doLogin = () => {
         if(document.getElementById('pass').value === '174539') {
             isAdmin = true;
             document.getElementById('forge').style.display='block';
             document.getElementById('login-modal').style.display='none';
-            // Refresh gallery to show delete buttons
-            location.reload(); 
-            // Tip: After login, the browser refreshes and you'll need to enter code once more to see the Forge, but isAdmin stays true for the session.
+            alert("Admin Active - Delete buttons visible on cards.");
+            // Manual check for delete buttons
+            document.querySelectorAll('.delete-btn').forEach(b => b.style.display = 'block');
         }
     };
 
     window.deleteTrack = async (id) => {
-        if(confirm("Delete this track forever?")) {
-            await deleteDoc(doc(db, "releases", id));
-        }
+        if(confirm("Delete this song?")) await deleteDoc(doc(db, "releases", id));
     };
 
     window.publishTrack = async () => {
         const title = document.getElementById('track-title').value;
         const aud = document.getElementById('f-audio').files[0];
         const img = document.getElementById('f-img').files[0];
-        if(!title || !aud) return alert("Missing Title or Audio");
+        if(!title || !aud) return alert("Missing Title/Audio");
 
-        document.getElementById('log').innerText = "Uploading...";
         const aRef = ref(storage, `tracks/${Date.now()}`);
         await uploadBytes(aRef, aud);
         const aUrl = await getDownloadURL(aRef);
 
-        let tUrl = "https://via.placeholder.com/300";
+        let tUrl = "https://images.unsplash.com/photo-1520523839897-bd0b52f945a0?q=80&w=300";
         if(img) {
             const iRef = ref(storage, `thumbs/${Date.now()}`);
             await uploadBytes(iRef, img);
             tUrl = await getDownloadURL(iRef);
         }
-
         await addDoc(collection(db, "releases"), { title, url: aUrl, thumb: tUrl, time: Date.now() });
-        document.getElementById('log').innerText = "Published!";
+        alert("Published!");
     };
 
     window.fireAI = async () => {
         const prompt = document.getElementById('ai-in').value;
         const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${G_KEY}`, {
             method: "POST", headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({ contents: [{ parts: [{ text: `${prompt}. Return ONLY JSON: {"css": "styles", "html": "markup"}` }] }] })
+            body: JSON.stringify({ contents: [{ parts: [{ text: `Task: ${prompt}. Return ONLY JSON: {"css": "styles", "html": "markup"}` }] }] })
         });
         const d = await r.json();
         const code = JSON.parse(d.candidates[0].content.parts[0].text.replace(/```json|```/g, ""));
         await setDoc(doc(db, "settings", "design"), code);
     };
 
-    // Load AI Design
     onSnapshot(doc(db, "settings", "design"), (doc) => {
         if(doc.exists()) {
             const data = doc.data();
