@@ -3,76 +3,104 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KEYVI PRODUCTIONS | Artist Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;700&display=swap" rel="stylesheet">
-    <style id="ai-styles">
-        :root { --gold: #D4AF37; --bg: #050505; }
-        body { background: var(--bg); color: white; font-family: 'Montserrat', sans-serif; margin: 0; transition: 0.5s; }
-        .hero { height: 50vh; display: flex; flex-direction: column; justify-content: center; align-items: center; border-bottom: 2px solid var(--gold); background: linear-gradient(to bottom, #111, #050505); }
-        #gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; padding: 40px; }
-        .card { background: #111; border: 1px solid #222; border-radius: 8px; overflow: hidden; transition: 0.3s; }
-        .card:hover { border-color: var(--gold); transform: scale(1.03); }
+    <title>KEYVI PRODUCTIONS | Studio Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;700&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
+    <style id="theme-engine">
+        :root { --main-gold: #D4AF37; --main-bg: #050505; --text: #fff; }
+        body { background: var(--main-bg); color: var(--text); font-family: 'Montserrat', sans-serif; margin: 0; }
+        .hero { height: 60vh; display: flex; flex-direction: column; justify-content: center; align-items: center; border-bottom: 2px solid var(--main-gold); }
+        nav { padding: 20px; text-align: center; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 100; }
+        nav a { color: var(--text); margin: 0 15px; text-decoration: none; font-weight: bold; font-size: 11px; letter-spacing: 2px; }
+        #gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; padding: 40px; }
+        .card { background: #111; border-radius: 10px; border: 1px solid #222; overflow: hidden; position: relative; }
         .thumb { width: 100%; aspect-ratio: 1/1; object-fit: cover; }
-        audio { width: 90%; margin: 5%; filter: invert(1); height: 30px; }
-        #admin-forge { position: fixed; bottom: 0; width: 100%; background: #000; border-top: 3px solid var(--gold); padding: 20px; display: none; z-index: 9999; }
-        .forge-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 1200px; margin: auto; }
-        input, textarea { background: #111; border: 1px solid #333; color: white; padding: 12px; width: 100%; margin-bottom: 10px; border-radius: 6px; box-sizing: border-box; }
-        .btn { padding: 12px; background: var(--gold); color: black; border: none; font-weight: bold; cursor: pointer; width: 100%; text-transform: uppercase; }
-        .progress-bar { width: 0%; height: 4px; background: var(--gold); position: fixed; top: 0; left: 0; transition: 0.3s; }
+        audio { width: 90%; margin: 5%; filter: invert(1); }
+        
+        /* THE COMMAND CENTER */
+        #admin-panel { position: fixed; bottom: 0; left:0; width: 100%; height: 55vh; background: #000; border-top: 4px solid var(--main-gold); z-index: 9999; display: none; overflow-y: auto; box-shadow: 0 -20px 50px rgba(0,0,0,0.9); }
+        .admin-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; padding: 30px; }
+        .section-box { background: #111; padding: 15px; border-radius: 8px; border: 1px solid #333; }
+        .section-box h4 { color: var(--main-gold); margin-top: 0; font-size: 11px; letter-spacing: 1px; }
+        input, select { width: 100%; padding: 10px; background: #000; color: white; border: 1px solid #444; border-radius: 4px; margin-bottom: 10px; box-sizing: border-box; }
+        
+        .publish-bar { position: sticky; top: 0; background: var(--main-gold); color: #000; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; font-weight: bold; z-index: 10; }
+        .deploy-btn { background: #000; color: #fff; border: none; padding: 10px 25px; border-radius: 5px; cursor: pointer; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
+        .deploy-btn:hover { background: #222; }
     </style>
 </head>
 <body>
 
-<div class="progress-bar" id="p-bar"></div>
-<div id="ai-top"></div>
-
-<section class="hero">
-    <h1 id="site-title" style="font-size: 3rem; letter-spacing: 5px; margin:0;">KEYVI PRODUCTIONS</h1>
-    <p id="site-slogan" style="letter-spacing: 3px; opacity: 0.7;">OFFICIAL ARTIST PORTAL</p>
+<section class="hero" id="hero-bg">
+    <h1 id="view-name" style="font-size: 4rem; letter-spacing: 10px; margin: 0;">KEYVI PRODUCTIONS</h1>
+    <p id="view-slogan" style="letter-spacing: 5px; opacity: 0.7;">LOADING PORTFOLIO...</p>
 </section>
 
-<nav style="text-align:center; padding: 15px; border-bottom: 1px solid #222;">
-    <a href="#" id="yt-link" style="color:var(--gold); margin:0 15px; text-decoration:none; font-weight:bold;">YOUTUBE</a>
-    <a href="#" id="contact-link" style="color:var(--gold); margin:0 15px; text-decoration:none; font-weight:bold;">CONTACT</a>
+<nav>
+    <a href="#gallery">GALLERY</a>
+    <a href="#" id="view-yt" target="_blank">YOUTUBE</a>
+    <a href="#" id="view-sp" target="_blank">SPOTIFY</a>
 </nav>
 
 <main id="gallery"></main>
 
-<div id="ai-bottom"></div>
-
-<footer style="text-align:center; padding: 50px; opacity: 0.3;">
-    <button onclick="openLogin()" style="background:none; border:none; color:white; cursor:pointer;">ADMIN DASHBOARD</button>
+<footer style="text-align: center; padding: 60px; opacity: 0.1;">
+    <button onclick="document.getElementById('login-gate').style.display='flex'">MASTER SETTINGS</button>
 </footer>
 
-<div id="login-modal" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); display:none; justify-content:center; align-items:center; z-index:10000;">
-    <div style="background:#111; padding:30px; border:1px solid var(--gold); text-align:center;">
-        <input type="password" id="pass" placeholder="PASSCODE">
-        <button class="btn" onclick="checkPass()">UNLOCK</button>
+<div id="login-gate" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); display:none; justify-content:center; align-items:center; z-index:10000;">
+    <div style="background:#111; padding:40px; border:2px solid var(--main-gold); text-align:center;">
+        <h2 style="color:var(--main-gold)">SECURE ACCESS</h2>
+        <input type="password" id="access-key" style="text-align:center; font-size:2rem; width:200px; margin-bottom:20px;">
+        <button onclick="unlock()" class="deploy-btn" style="width:100%; background:var(--main-gold); color:#000;">UNLOCK DASHBOARD</button>
     </div>
 </div>
 
-<div id="admin-forge">
-    <div class="forge-grid">
-        <div>
-            <h4 style="color:var(--gold); margin:0 0 10px 0;">AI DESIGNER (INSTANT)</h4>
-            <textarea id="ai-prompt" rows="3" placeholder="Change theme to Midnight Blue..."></textarea>
-            <button class="btn" onclick="updateStyle()" id="ai-btn">Distribute Changes</button>
+<div id="admin-panel">
+    <div class="publish-bar">
+        <span>STAGING MODE: Changes are local until you publish.</span>
+        <button class="deploy-btn" onclick="deployAll()">REPUBLISH INSTANTLY</button>
+    </div>
+
+    <div class="admin-grid">
+        <div class="section-box">
+            <h4>1. BRANDING & TEXT</h4>
+            <label style="font-size:9px">ARTIST NAME</label>
+            <input type="text" id="edit-name" oninput="stageChange()">
+            <label style="font-size:9px">SLOGAN</label>
+            <input type="text" id="edit-slogan" oninput="stageChange()">
         </div>
-        <div>
-            <h4 style="color:var(--gold); margin:0 0 10px 0;">TRACK UPLOADER</h4>
-            <input type="text" id="t-title" placeholder="Song Title">
-            <div style="display:flex; gap:10px;">
-                <input type="file" id="f-aud" accept="audio/*">
-                <input type="file" id="f-img" accept="image/*">
-            </div>
-            <button class="btn" onclick="uploadTrack()" id="up-btn">Publish to Spotify Style Gallery</button>
+
+        <div class="section-box">
+            <h4>2. THEME & COLORS</h4>
+            <label style="font-size:9px">BACKGROUND</label><input type="color" id="edit-bg" oninput="stageChange()">
+            <label style="font-size:9px">ACCENT GOLD</label><input type="color" id="edit-gold" oninput="stageChange()">
+            <label style="font-size:9px">TYPOGRAPHY</label>
+            <select id="edit-font" onchange="stageChange()">
+                <option value="'Montserrat'">Modern (Montserrat)</option>
+                <option value="'Playfair Display'">Elegant (Playfair)</option>
+                <option value="'Courier New'">Studio (Mono)</option>
+            </select>
+        </div>
+
+        <div class="section-box">
+            <h4>3. DISTRIBUTION LINKS</h4>
+            <label style="font-size:9px">YOUTUBE URL</label><input type="text" id="edit-yt" oninput="stageChange()">
+            <label style="font-size:9px">SPOTIFY URL</label><input type="text" id="edit-sp" oninput="stageChange()">
+        </div>
+
+        <div class="section-box">
+            <h4>4. DISTRIBUTE NEW AUDIO</h4>
+            <input type="text" id="new-track-name" placeholder="Song Title">
+            <input type="file" id="new-audio" accept="audio/*">
+            <input type="file" id="new-cover" accept="image/*">
+            <button onclick="distributeTrack()" style="width:100%; padding:10px; background:#222; color:#fff; border:none; cursor:pointer;">UPLOAD TO SERVER</button>
         </div>
     </div>
 </div>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, doc, setDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    import { getFirestore, doc, setDoc, onSnapshot, collection, addDoc, query, orderBy, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
     import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
 
     const firebaseConfig = {
@@ -87,88 +115,16 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     const storage = getStorage(app);
-    const G_KEY = "AIzaSyDy2cL09SGPbITf0d-7s2izZencKTSbLpU";
 
-    let isAdmin = false;
-
-    // --- 1. THE INSTANT SYNC ENGINE ---
-    onSnapshot(doc(db, "settings", "live_config"), (snap) => {
-        if(snap.exists()){
-            const data = snap.data();
-            if(data.css) document.getElementById('ai-styles').innerHTML += data.css;
-            if(data.title) document.getElementById('site-title').innerText = data.title;
-            if(data.slogan) document.getElementById('site-slogan').innerText = data.slogan;
-            if(data.yt) document.getElementById('yt-link').href = data.yt;
-        }
-    });
-
-    window.updateStyle = async () => {
-        const prompt = document.getElementById('ai-prompt').value;
-        const btn = document.getElementById('ai-btn');
-        btn.innerText = "DISTRIBUTING...";
-        document.getElementById('p-bar').style.width = "50%";
-
-        const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${G_KEY}`, {
-            method: "POST", headers: {"Content-Type":"application/json"},
-            body: JSON.stringify({ contents: [{ parts: [{ text: `User wants: ${prompt}. Return ONLY JSON: {"css": "new css", "title": "site name", "yt": "url"}` }] }] })
-        });
-        const d = await r.json();
-        const code = JSON.parse(d.candidates[0].content.parts[0].text.replace(/```json|```/g, ""));
+    // --- 1. LOCAL STAGING LOGIC (No Wait Time) ---
+    window.stageChange = () => {
+        const bg = document.getElementById('edit-bg').value;
+        const gold = document.getElementById('edit-gold').value;
+        const font = document.getElementById('edit-font').value;
         
-        await setDoc(doc(db, "settings", "live_config"), code);
-        document.getElementById('p-bar').style.width = "100%";
-        btn.innerText = "LIVE!";
-        setTimeout(() => { document.getElementById('p-bar').style.width = "0%"; btn.innerText = "Distribute Changes"; }, 2000);
-    };
-
-    // --- 2. TRACK UPLOADER ---
-    window.uploadTrack = async () => {
-        const title = document.getElementById('t-title').value;
-        const aud = document.getElementById('f-aud').files[0];
-        const img = document.getElementById('f-img').files[0];
-        if(!title || !aud) return alert("Title and Audio required");
-
-        document.getElementById('p-bar').style.width = "30%";
-        const aRef = ref(storage, `m/${Date.now()}`);
-        await uploadBytes(aRef, aud);
-        const aUrl = await getDownloadURL(aRef);
-        document.getElementById('p-bar').style.width = "70%";
-
-        let tUrl = "https://images.unsplash.com/photo-1520523839897-bd0b52f945a0?w=400";
-        if(img) {
-            const iRef = ref(storage, `t/${Date.now()}`);
-            await uploadBytes(iRef, img);
-            tUrl = await getDownloadURL(iRef);
-        }
-
-        await addDoc(collection(db, "releases"), { title, url: aUrl, thumb: tUrl, time: Date.now() });
-        document.getElementById('p-bar').style.width = "100%";
-        setTimeout(() => { document.getElementById('p-bar').style.width = "0%"; }, 2000);
-        document.getElementById('t-title').value = "";
-    };
-
-    // --- 3. REAL-TIME GALLERY ---
-    onSnapshot(query(collection(db, "releases"), orderBy("time", "desc")), (snap) => {
-        const gal = document.getElementById('gallery');
-        gal.innerHTML = "";
-        snap.forEach(d => {
-            const item = d.data();
-            const id = d.id;
-            gal.innerHTML += `
-                <div class="card">
-                    <button onclick="delTrack('${id}')" style="display:${isAdmin?'block':'none'}; position:absolute; background:red; color:white; border:none; cursor:pointer;">X</button>
-                    <img src="${item.thumb}" class="thumb">
-                    <div style="padding:15px; text-align:center;">
-                        <h3 style="margin:0; color:var(--gold); font-size:1rem;">${item.title}</h3>
-                        <audio controls src="${item.url}"></audio>
-                    </div>
-                </div>`;
-        });
-    });
-
-    window.delTrack = async (id) => { if(confirm("Delete track?")) await deleteDoc(doc(db, "releases", id)); };
-    window.openLogin = () => document.getElementById('login-modal').style.display='flex';
-    window.checkPass = () => { if(document.getElementById('pass').value==='174539') { isAdmin=true; document.getElementById('admin-forge').style.display='block'; document.getElementById('login-modal').style.display='none'; alert("Admin Live"); } };
-</script>
-</body>
-</html>
+        // Immediate Local Preview
+        document.body.style.backgroundColor = bg;
+        document.documentElement.style.setProperty('--main-gold', gold);
+        document.body.style.fontFamily = font;
+        document.getElementById('view-name').innerText = document.getElementById('edit-name').value;
+        document.getElementById('view-slogan').innerText = document.getElementById('edit-slogan').value;
