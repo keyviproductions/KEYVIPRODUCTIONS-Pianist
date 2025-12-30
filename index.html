@@ -3,119 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KEYVI PRODUCTIONS | Piano Music</title>
+    <title>KEYVI PRODUCTIONS | Official</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;700&display=swap" rel="stylesheet">
-    <style>
-        :root { --gold: #D4AF37; --bg: #000000; --card: #111111; }
-        body { background-color: var(--bg); color: white; font-family: 'Montserrat', sans-serif; margin: 0; overflow-x: hidden; }
-        
-        /* Hero Section (Like PianoHands) */
-        .hero {
-            height: 80vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1520523839897-bd0b52f945a0?q=80&w=2000&auto=format&fit=crop');
-            background-size: cover;
-            background-position: center;
-            border-bottom: 3px solid var(--gold);
-        }
-        .hero h1 { font-size: 4rem; letter-spacing: 10px; margin: 0; text-transform: uppercase; color: var(--gold); }
-        .hero p { font-size: 1.2rem; letter-spacing: 3px; margin-top: 10px; opacity: 0.8; }
-
-        /* Navigation */
-        nav { background: rgba(0,0,0,0.9); padding: 20px; text-align: center; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid #222; }
-        nav a { color: white; text-decoration: none; margin: 0 20px; font-weight: bold; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 2px; }
-        nav a:hover { color: var(--gold); }
-
-        /* About Section */
-        .section-title { text-align: center; padding: 60px 20px 20px; color: var(--gold); font-size: 2rem; letter-spacing: 5px; text-transform: uppercase; }
-        .about-text { max-width: 800px; margin: auto; text-align: center; line-height: 1.8; opacity: 0.9; padding: 0 20px 60px; }
-
-        /* Gallery Grid */
-        #gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; padding: 40px; max-width: 1200px; margin: auto; }
-        .card { background: var(--card); border-radius: 0; border: 1px solid #222; position: relative; transition: 0.4s; }
-        .card:hover { border-color: var(--gold); transform: translateY(-10px); }
-        .thumb { width: 100%; aspect-ratio: 16/9; object-fit: cover; opacity: 0.7; }
-        .card-info { padding: 20px; text-align: center; }
-        .card-info h3 { margin: 0 0 15px 0; color: var(--gold); letter-spacing: 2px; }
-        audio { width: 100%; filter: invert(1); }
-        .delete-btn { position: absolute; top: 10px; right: 10px; background: red; color: white; border: none; cursor: pointer; display: none; padding: 5px 10px; font-weight: bold; }
-
-        /* Footer */
-        footer { background: #000; padding: 60px 20px; text-align: center; border-top: 1px solid #222; }
-        .footer-socials { margin-bottom: 20px; }
-        .footer-socials a { color: var(--gold); margin: 0 15px; text-decoration: none; font-size: 1.5rem; }
-        
-        /* Admin Forge */
-        #forge { position: fixed; bottom: 0; width: 100%; background: #000; border-top: 3px solid var(--gold); padding: 20px; display: none; z-index: 1000; }
-        .forge-wrap { max-width: 1000px; margin: auto; display: flex; gap: 20px; }
-        input, textarea { background: #111; border: 1px solid #333; color: white; padding: 10px; width: 100%; border-radius: 4px; margin-bottom: 10px; }
-        .btn { padding: 10px 20px; background: var(--gold); color: black; border: none; font-weight: bold; cursor: pointer; text-transform: uppercase; width: 100%; }
-        #login-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: none; justify-content: center; align-items: center; z-index: 9999; }
+    <style id="base-styles">
+        :root { --gold: #D4AF37; --bg: #000; }
+        body { background: var(--bg); color: white; font-family: 'Montserrat', sans-serif; margin: 0; }
+        .hero { height: 60vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; border-bottom: 2px solid var(--gold); background: #111; }
+        nav { background: rgba(0,0,0,0.9); padding: 15px; text-align: center; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid #222; }
+        nav a { color: white; text-decoration: none; margin: 0 15px; font-weight: bold; font-size: 0.8rem; }
+        #gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; padding: 40px; }
+        .card { background: #111; border: 1px solid #222; position: relative; padding-bottom: 15px; }
+        .thumb { width: 100%; aspect-ratio: 16/9; object-fit: cover; }
+        audio { width: 90%; margin: 5%; filter: invert(1); }
+        #admin-forge { position: fixed; bottom: 0; width: 100%; background: #000; border-top: 3px solid var(--gold); padding: 20px; display: none; z-index: 999; box-shadow: 0 -10px 30px rgba(0,0,0,1); }
+        .forge-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 1200px; margin: auto; }
+        input, textarea { background: #111; border: 1px solid #444; color: white; padding: 10px; width: 100%; margin-bottom: 10px; border-radius: 5px; box-sizing: border-box; }
+        .btn { padding: 12px; background: var(--gold); color: black; border: none; font-weight: bold; cursor: pointer; width: 100%; text-transform: uppercase; }
+        #login-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); display: none; justify-content: center; align-items: center; z-index: 9999; }
     </style>
+    <style id="ai-styles"></style>
 </head>
 <body>
 
-<section class="hero" id="home">
-    <h1>KEYVI PRODUCTIONS</h1>
-    <p>PIANIST • PRODUCER • ARTIST</p>
+<div id="ai-content-top"></div>
+
+<section class="hero">
+    <h1 id="site-title">KEYVI PRODUCTIONS</h1>
+    <p id="site-slogan">PIANIST • PRODUCER</p>
 </section>
 
-<nav>
-    <a href="#home">Home</a>
-    <a href="#about">About</a>
-    <a href="#music">Music</a>
-    <a href="mailto:your-email@gmail.com">Contact</a>
+<nav id="site-nav">
+    <a href="#music">MUSIC</a>
+    <a href="#" id="yt-link">YOUTUBE</a>
+    <a href="#" id="contact-link">CONTACT</a>
 </nav>
 
-<section id="about">
-    <div class="section-title">Welcome</div>
-    <div class="about-text">
-        Welcome to Keyvi Productions: Your home for professional piano covers and arrangements. 
-        Enjoy the latest favorites, updated constantly. Whether you are looking for inspiration 
-        or a relaxing atmosphere, you've come to the right place.
-    </div>
-</section>
-
-<div class="section-title" id="music">Latest Music</div>
-<div id="ai-layer"></div>
 <main id="gallery"></main>
 
-<footer>
-    <div class="footer-socials">
-        <a href="#">YouTube</a>
-        <a href="#">Instagram</a>
-        <a href="#">Apple Music</a>
-    </div>
-    <p style="color: #444;">&copy; 2025 KEYVI PRODUCTIONS. All Rights Reserved.</p>
-    <button onclick="document.getElementById('login-modal').style.display='flex'" style="background:none; border:none; color:#222; cursor:pointer;">Admin</button>
+<div id="ai-content-bottom"></div>
+
+<footer style="text-align:center; padding: 40px; border-top: 1px solid #222;">
+    <p id="footer-text">&copy; 2025 KEYVI PRODUCTIONS</p>
+    <button onclick="document.getElementById('login-modal').style.display='flex'" style="opacity:0.1; background:none; color:white; border:none; cursor:pointer;">Admin</button>
 </footer>
 
 <div id="login-modal">
     <div style="background:#111; padding:30px; border-radius:10px; border:1px solid var(--gold); text-align:center;">
-        <input type="password" id="pass" placeholder="Enter Key">
-        <button class="btn" onclick="doLogin()">Unlock</button>
+        <h3>ADMIN ACCESS</h3>
+        <input type="password" id="pass" placeholder="Passcode">
+        <button class="btn" onclick="doLogin()">Unlock Forge</button>
     </div>
 </div>
 
-<div id="forge">
-    <div class="forge-wrap">
-        <div style="flex:1">
-            <h4 style="color:var(--gold)">AI ARCHITECT</h4>
-            <textarea id="ai-in" placeholder="Ask AI to redesign site..."></textarea>
-            <button class="btn" onclick="fireAI()">Update Site</button>
+<div id="admin-forge">
+    <div class="forge-grid">
+        <div>
+            <h4 style="color:var(--gold)">AI ARCHITECT (Real-Time Styling)</h4>
+            <textarea id="ai-prompt" rows="4" placeholder="Example: Change the title to 'Piano King', make the background dark blue, and set the YouTube link to https://youtube.com/..."></textarea>
+            <button class="btn" onclick="fireAI()">Apply All Changes</button>
         </div>
-        <div style="flex:1">
-            <h4 style="color:var(--gold)">NEW TRACK</h4>
-            <input type="text" id="track-title" placeholder="Title">
-            <input type="file" id="f-audio" accept="audio/*">
+        <div>
+            <h4 style="color:var(--gold)">MUSIC UPLOADER</h4>
+            <input type="text" id="t-title" placeholder="Track Name">
+            <label style="font-size:10px">Audio File:</label>
+            <input type="file" id="f-aud" accept="audio/*">
+            <label style="font-size:10px">Cover Image:</label>
             <input type="file" id="f-img" accept="image/*">
-            <button class="btn" onclick="publishTrack()">Publish Live</button>
+            <button class="btn" onclick="publish()">Publish Track</button>
         </div>
     </div>
+    <div id="status" style="text-align:center; color:var(--gold); font-size:12px; margin-top:10px;">System Ready</div>
 </div>
 
 <script type="module">
@@ -139,79 +96,95 @@
 
     let isAdmin = false;
 
-    // Load Music
-    onSnapshot(query(collection(db, "releases"), orderBy("time", "desc")), (snap) => {
-        const gal = document.getElementById('gallery');
-        gal.innerHTML = "";
-        snap.forEach(d => {
-            const data = d.data();
-            const id = d.id;
-            gal.innerHTML += `
-                <div class="card">
-                    <button class="delete-btn" style="display:${isAdmin?'block':'none'}" onclick="deleteTrack('${id}')">X</button>
-                    <img src="${data.thumb}" class="thumb">
-                    <div class="card-info">
-                        <h3>${data.title}</h3>
-                        <audio controls src="${data.url}"></audio>
-                    </div>
-                </div>`;
-        });
-    });
-
-    // Admin Functions
+    // 1. LOGIN
     window.doLogin = () => {
         if(document.getElementById('pass').value === '174539') {
             isAdmin = true;
-            document.getElementById('forge').style.display='block';
-            document.getElementById('login-modal').style.display='none';
-            alert("Admin Active - Delete buttons visible on cards.");
-            // Manual check for delete buttons
-            document.querySelectorAll('.delete-btn').forEach(b => b.style.display = 'block');
+            document.getElementById('admin-forge').style.display = 'block';
+            document.getElementById('login-modal').style.display = 'none';
         }
     };
 
-    window.deleteTrack = async (id) => {
-        if(confirm("Delete this song?")) await deleteDoc(doc(db, "releases", id));
+    // 2. REAL-TIME AI STYLING & LINKS
+    window.fireAI = async () => {
+        const prompt = document.getElementById('ai-prompt').value;
+        const status = document.getElementById('status');
+        status.innerText = "Gemini is analyzing and rewriting...";
+
+        const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${G_KEY}`, {
+            method: "POST", headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({ contents: [{ parts: [{ text: `Task: ${prompt}. You must return a JSON object that controls the site. Format: {"css": "all new css styles", "top_html": "extra html for top", "bottom_html": "extra html for bottom", "title": "new site name", "slogan": "new slogan", "yt": "youtube url", "contact": "email or phone"}. Return ONLY JSON.` }] }] })
+        });
+        
+        const d = await r.json();
+        const code = JSON.parse(d.candidates[0].content.parts[0].text.replace(/```json|```/g, ""));
+        
+        // Save to Firebase - This makes the change permanent for everyone
+        await setDoc(doc(db, "settings", "global_config"), code);
+        status.innerText = "Site successfully customized!";
     };
 
-    window.publishTrack = async () => {
-        const title = document.getElementById('track-title').value;
-        const aud = document.getElementById('f-audio').files[0];
-        const img = document.getElementById('f-img').files[0];
-        if(!title || !aud) return alert("Missing Title/Audio");
+    // Listen for Site Changes
+    onSnapshot(doc(db, "settings", "global_config"), (snap) => {
+        if(snap.exists()) {
+            const data = snap.data();
+            if(data.css) document.getElementById('ai-styles').innerHTML = data.css;
+            if(data.top_html) document.getElementById('ai-content-top').innerHTML = data.top_html;
+            if(data.bottom_html) document.getElementById('ai-content-bottom').innerHTML = data.bottom_html;
+            if(data.title) document.getElementById('site-title').innerText = data.title;
+            if(data.slogan) document.getElementById('site-slogan').innerText = data.slogan;
+            if(data.yt) document.getElementById('yt-link').href = data.yt;
+            if(data.contact) document.getElementById('contact-link').href = "mailto:" + data.contact;
+        }
+    });
 
-        const aRef = ref(storage, `tracks/${Date.now()}`);
+    // 3. REAL-TIME MUSIC UPLOAD
+    window.publish = async () => {
+        const title = document.getElementById('t-title').value;
+        const aud = document.getElementById('f-aud').files[0];
+        const img = document.getElementById('f-img').files[0];
+        const status = document.getElementById('status');
+        if(!title || !aud) return alert("Title and Audio file required!");
+
+        status.innerText = "Uploading Audio...";
+        const aRef = ref(storage, `music/${Date.now()}`);
         await uploadBytes(aRef, aud);
         const aUrl = await getDownloadURL(aRef);
 
-        let tUrl = "https://images.unsplash.com/photo-1520523839897-bd0b52f945a0?q=80&w=300";
+        let tUrl = "https://images.unsplash.com/photo-1520523839897-bd0b52f945a0?w=400";
         if(img) {
+            status.innerText = "Uploading Image...";
             const iRef = ref(storage, `thumbs/${Date.now()}`);
             await uploadBytes(iRef, img);
             tUrl = await getDownloadURL(iRef);
         }
+
         await addDoc(collection(db, "releases"), { title, url: aUrl, thumb: tUrl, time: Date.now() });
-        alert("Published!");
+        status.innerText = "Track Published!";
+        document.getElementById('t-title').value = "";
     };
 
-    window.fireAI = async () => {
-        const prompt = document.getElementById('ai-in').value;
-        const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${G_KEY}`, {
-            method: "POST", headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({ contents: [{ parts: [{ text: `Task: ${prompt}. Return ONLY JSON: {"css": "styles", "html": "markup"}` }] }] })
+    // 4. REAL-TIME GALLERY LISTENER
+    onSnapshot(query(collection(db, "releases"), orderBy("time", "desc")), (snap) => {
+        const gal = document.getElementById('gallery');
+        gal.innerHTML = "";
+        snap.forEach(d => {
+            const item = d.data();
+            const id = d.id;
+            const card = document.createElement('div');
+            card.className = "card";
+            card.innerHTML = `
+                <button onclick="del('${id}')" style="display:${isAdmin?'block':'none'}; position:absolute; top:5px; right:5px; background:red; color:white; border:none; cursor:pointer;">X</button>
+                <img src="${item.thumb}" class="thumb">
+                <div style="padding:15px; text-align:center;">
+                    <h3 style="margin:0; color:var(--gold);">${item.title}</h3>
+                    <audio controls src="${item.url}"></audio>
+                </div>`;
+            gal.appendChild(card);
         });
-        const d = await r.json();
-        const code = JSON.parse(d.candidates[0].content.parts[0].text.replace(/```json|```/g, ""));
-        await setDoc(doc(db, "settings", "design"), code);
-    };
-
-    onSnapshot(doc(db, "settings", "design"), (doc) => {
-        if(doc.exists()) {
-            const data = doc.data();
-            document.getElementById('ai-layer').innerHTML = data.html || "";
-            let s = document.createElement('style'); s.innerHTML = data.css || ""; document.head.appendChild(s);
-        }
     });
+
+    window.del = async (id) => { if(confirm("Delete this?")) await deleteDoc(doc(db, "releases", id)); };
 </script>
 </body>
 </html>
