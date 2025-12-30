@@ -3,130 +3,145 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="view-meta-title">KEYVI PRODUCTIONS | Studio Portal</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;700&family=Playfair+Display:ital,wght@0,700;1,700&family=Space+Mono&display=swap" rel="stylesheet">
-    <style id="dynamic-styles">
-        :root { --main: #D4AF37; --bg: #050505; --text: #fff; --gap: 40px; }
-        body { background: var(--bg); color: var(--text); font-family: 'Montserrat', sans-serif; margin: 0; transition: 0.3s; }
+    <title id="view-title">KEYVI OS | Professional Studio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&family=Playfair+Display:wght@700&family=Syncopate:wght@700&display=swap" rel="stylesheet">
+    <style id="root-vars">
+        :root { --p: #D4AF37; --bg: #000; --txt: #fff; --glass: rgba(255,255,255,0.03); --br: 12px; --blur: 20px; }
+        * { box-sizing: border-box; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        body { background: var(--bg); color: var(--txt); font-family: 'Inter', sans-serif; margin: 0; overflow-x: hidden; }
         
-        /* NAVIGATION */
-        nav { padding: 20px; text-align: center; background: rgba(0,0,0,0.9); position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid var(--main); }
-        nav a { color: var(--text); margin: 0 15px; text-decoration: none; font-weight: bold; font-size: 11px; letter-spacing: 2px; }
+        /* THE VISUAL ENGINE */
+        .glass { background: var(--glass); backdrop-filter: blur(var(--blur)); border: 1px solid rgba(255,255,255,0.1); border-radius: var(--br); }
+        .hero-v10 { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; position: relative; overflow: hidden; }
+        .hero-v10 h1 { font-family: 'Syncopate', sans-serif; font-size: clamp(3rem, 12vw, 8rem); margin: 0; line-height: 0.9; letter-spacing: -5px; }
+        .p-btn { background: var(--p); color: #000; padding: 18px 40px; border-radius: 50px; font-weight: 900; text-decoration: none; text-transform: uppercase; font-size: 12px; border: none; cursor: pointer; }
+        
+        /* MODULAR SECTIONS */
+        .section { padding: 100px 5%; opacity: 1; transform: translateY(0); }
+        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
+        .card { padding: 20px; position: relative; border: 1px solid rgba(255,255,255,0.05); }
+        .card img { width: 100%; border-radius: 8px; margin-bottom: 20px; aspect-ratio: 1; object-fit: cover; }
+        
+        /* INVISIBLE ADMIN TRIGGER */
+        #admin-trigger { position: fixed; bottom: 0; right: 0; width: 50px; height: 50px; cursor: pointer; z-index: 999999; opacity: 0; }
+
+        /* KEYVI STUDIO OS PANEL */
+        #studio-os { position: fixed; inset: 15px; background: #080808; z-index: 1000000; border-radius: 20px; border: 1px solid #333; display: none; overflow: hidden; display: flex; flex-direction: column; color: #fff; box-shadow: 0 50px 100px rgba(0,0,0,0.9); }
+        .os-header { padding: 20px 30px; background: #111; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #222; }
+        .os-body { display: flex; flex: 1; overflow: hidden; }
+        .os-sidebar { width: 280px; background: #0a0a0a; border-right: 1px solid #222; padding: 20px; overflow-y: auto; }
+        .os-content { flex: 1; padding: 40px; overflow-y: auto; background: #050505; }
+        .tool-tab { padding: 12px 20px; border-radius: 8px; cursor: pointer; margin-bottom: 5px; font-size: 13px; font-weight: 600; color: #888; }
+        .tool-tab:hover, .tool-tab.active { background: #1a1a1a; color: var(--p); }
+        
+        /* INPUTS */
+        .os-input { background: #111; border: 1px solid #333; color: #fff; padding: 12px; border-radius: 8px; width: 100%; margin: 10px 0; font-family: inherit; }
+        .stat-card { background: #111; padding: 20px; border-radius: 12px; border: 1px solid #222; }
+        
+        /* AI COMMAND BAR */
+        #ai-bar { background: #1a1a1a; border: 2px solid var(--p); color: var(--p); padding: 15px; border-radius: 10px; font-family: 'Space Mono', monospace; width: 100%; margin-bottom: 30px; }
+        
         .hidden { display: none !important; }
-
-        /* SECTIONS */
-        .page-section { padding: var(--gap) 20px; max-width: 1200px; margin: auto; }
-        .hero { height: 60vh; display: flex; flex-direction: column; justify-content: center; align-items: center; border-bottom: 2px solid var(--main); text-align: center; }
-        .section-title { color: var(--main); text-align: center; font-size: 2rem; letter-spacing: 5px; margin-bottom: 40px; text-transform: uppercase; }
-        
-        /* GRID LOGIC */
-        .content-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; }
-        .music-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden; }
-        .music-card img { width: 100%; aspect-ratio: 1/1; object-fit: cover; }
-        audio { width: 90%; margin: 5%; filter: invert(1); }
-
-        /* ADMIN PANEL - THE ENGINE */
-        #admin-panel { position: fixed; inset: 0; background: #000; z-index: 99999; display: none; overflow-y: auto; padding: 40px; }
-        .admin-nav { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--main); padding-bottom: 20px; margin-bottom: 30px; }
-        .admin-layout { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; }
-        .control-group { background: #111; padding: 20px; border: 1px solid #333; border-radius: 10px; }
-        .control-group h3 { color: var(--main); margin-top: 0; font-size: 14px; border-bottom: 1px solid #222; padding-bottom: 10px; }
-        label { display: block; font-size: 10px; margin: 10px 0 5px; color: #888; text-transform: uppercase; }
-        input, select, textarea { width: 100%; padding: 10px; background: #000; color: #fff; border: 1px solid #444; border-radius: 5px; }
-        .btn-pub { background: var(--main); color: #000; border: none; padding: 15px; font-weight: bold; width: 100%; cursor: pointer; border-radius: 5px; margin-top: 20px; }
-        .toggle-row { display: flex; align-items: center; gap: 10px; margin: 10px 0; }
-        .toggle-row input { width: auto; }
     </style>
 </head>
-<body>
+<body id="master-body">
 
-<nav id="main-nav">
-    <a href="#hero-sec" id="nav-h">HOME</a>
-    <a href="#music-sec" id="nav-m">MUSIC</a>
-    <a href="#video-sec" id="nav-v">VIDEOS</a>
-    <a href="#custom-sec" id="nav-c">INFO</a>
+<div id="admin-trigger" onclick="openLogin()"></div>
+
+<nav id="v-nav" class="glass" style="position:fixed; top:20px; left:50%; transform:translateX(-50%); width:90%; padding:15px 40px; display:flex; justify-content:space-between; align-items:center; z-index:999;">
+    <div id="v-logo" style="font-weight:900; letter-spacing:2px;">KEYVI</div>
+    <div style="display:flex; gap:30px; font-size:11px; font-weight:bold;" id="v-nav-links">
+        <a href="#music" style="color:#fff; text-decoration:none;">MUSIC</a>
+        <a href="#videos" style="color:#fff; text-decoration:none;">VIDEOS</a>
+        <a href="#newsletter" style="color:#fff; text-decoration:none;">JOIN</a>
+    </div>
 </nav>
 
-<section class="hero" id="hero-sec">
-    <h1 id="v-name" style="font-size: clamp(2rem, 8vw, 5rem); letter-spacing: 10px;">KEYVI PRODUCTIONS</h1>
-    <p id="v-slogan">MODULAR STUDIO HUB</p>
+<section class="hero-v10" id="v-hero-sec">
+    <h1 id="v-artist-name">KEYVI</h1>
+    <p id="v-tagline" style="opacity:0.6; margin-top:20px; letter-spacing:5px;">PREMIUM PIANO PRODUCTIONS</p>
+    <div id="v-hero-btns" style="margin-top:40px;">
+        <button class="p-btn" id="v-cta">LISTEN NOW</button>
+    </div>
 </section>
 
-<div class="page-section" id="music-sec">
-    <h2 class="section-title">MUSIC RELEASES</h2>
-    <div id="gallery" class="content-grid"></div>
+<section class="section" id="v-music-sec">
+    <h2 style="text-align:center; margin-bottom:60px; font-size:3rem; font-family: 'Syncopate';">LATEST RELEASES</h2>
+    <div id="gallery" class="grid-3"></div>
+</section>
+
+<div id="os-gate" style="position:fixed; inset:0; background:#000; z-index:2000000; display:none; flex-direction:column; justify-content:center; align-items:center;">
+    <h1 style="color:var(--p); font-family:Syncopate;">ENCRYPTED ACCESS</h1>
+    <input type="password" id="os-pass" style="background:transparent; border:none; border-bottom:2px solid var(--p); color:#fff; font-size:4rem; text-align:center; width:300px; outline:none;">
+    <button onclick="checkPass()" style="margin-top:40px; background:none; border:1px solid #fff; color:#fff; padding:10px 40px; cursor:pointer;">AUTHORIZE SYSTEM</button>
 </div>
 
-<div class="page-section hidden" id="video-sec">
-    <h2 class="section-title">VIDEO GALLERY</h2>
-    <div id="video-container" class="content-grid"></div>
-</div>
-
-<div class="page-section hidden" id="custom-sec">
-    <h2 class="section-title" id="v-c-title">ANNOUNCEMENTS</h2>
-    <div id="v-c-content" style="text-align:center; line-height:1.8;"></div>
-</div>
-
-<footer style="padding: 100px; text-align: center; opacity: 0.1;">
-    <button onclick="document.getElementById('login-gate').style.display='flex'">SYSTEM ACCESS</button>
-</footer>
-
-<div id="login-gate" style="position:fixed; inset:0; background:rgba(0,0,0,0.98); display:none; justify-content:center; align-items:center; z-index:100000;">
-    <div style="background:#111; padding:40px; border:2px solid var(--main); text-align:center; border-radius:15px;">
-        <input type="password" id="pass-key" placeholder="174539" style="font-size:2rem; text-align:center;">
-        <button onclick="unlock()" class="btn-pub">AUTHORIZE</button>
+<div id="studio-os" style="display:none;">
+    <div class="os-header">
+        <div style="display:flex; align-items:center; gap:10px;">
+            <div style="width:12px; height:12px; background:#ff5f56; border-radius:50%;"></div>
+            <div style="width:12px; height:12px; background:#ffbd2e; border-radius:50%;"></div>
+            <div style="width:12px; height:12px; background:#27c93f; border-radius:50%;"></div>
+            <span style="margin-left:20px; font-weight:900; font-size:12px;">KEYVI STUDIO OS v10.4.2</span>
+        </div>
+        <button onclick="deploy()" style="background:var(--p); border:none; padding:8px 25px; border-radius:5px; font-weight:900; cursor:pointer;">DEPLOY LIVE</button>
     </div>
-</div>
-
-<div id="admin-panel">
-    <div class="admin-nav">
-        <h2>GOD-MODE ARCHITECT</h2>
-        <button onclick="deploy()" class="btn-pub" style="width:200px; margin:0;">SAVE & REPUBLISH</button>
-    </div>
-
-    <div class="admin-layout">
-        <div class="control-group">
-            <h3>🏗️ NAVIGATION BUILDER</h3>
-            <div class="toggle-row"><input type="checkbox" id="i-nav-h"> <label>Show Home Link</label></div>
-            <div class="toggle-row"><input type="checkbox" id="i-nav-m"> <label>Show Music Link</label></div>
-            <div class="toggle-row"><input type="checkbox" id="i-nav-v"> <label>Show Video Link</label></div>
-            <div class="toggle-row"><input type="checkbox" id="i-nav-c"> <label>Show Info Link</label></div>
+    
+    <div class="os-body">
+        <div class="os-sidebar">
+            <div class="tool-tab active" onclick="showTab('design')">🎨 DESIGN SYSTEM</div>
+            <div class="tool-tab" onclick="showTab('content')">🎵 CONTENT MANAGER</div>
+            <div class="tool-tab" onclick="showTab('ai')">🤖 AI ARCHITECT</div>
+            <div class="tool-tab" onclick="showTab('analytics')">📈 REAL-TIME STATS</div>
+            <div class="tool-tab" onclick="location.reload()" style="margin-top:40px; color:red;">LOGOUT</div>
         </div>
+        
+        <div class="os-content" id="os-content">
+            <div id="tab-design">
+                <h2>DESIGN SYSTEM</h2>
+                <div class="grid-3">
+                    <div class="stat-card">
+                        <label>Primary Brand Color</label>
+                        <input type="color" id="s-p" class="os-input">
+                        <label>Background DNA</label>
+                        <input type="color" id="s-bg" class="os-input">
+                    </div>
+                    <div class="stat-card">
+                        <label>Glass Blur Intensity</label>
+                        <input type="range" id="s-blur" min="0" max="100" class="os-input">
+                        <label>Corner Rounding (px)</label>
+                        <input type="range" id="s-br" min="0" max="100" class="os-input">
+                    </div>
+                    <div class="stat-card">
+                        <label>Artist Name</label>
+                        <input type="text" id="s-name" class="os-input">
+                        <label>Sub-Tagline</label>
+                        <input type="text" id="s-tag" class="os-input">
+                    </div>
+                </div>
+            </div>
 
-        <div class="control-group">
-            <h3>📺 SECTION VISIBILITY</h3>
-            <div class="toggle-row"><input type="checkbox" id="i-sec-m"> <label>Enable Music Section</label></div>
-            <div class="toggle-row"><input type="checkbox" id="i-sec-v"> <label>Enable Video Section</label></div>
-            <div class="toggle-row"><input type="checkbox" id="i-sec-c"> <label>Enable Custom Section</label></div>
-        </div>
+            <div id="tab-ai" class="hidden">
+                <h2>AI REAL-TIME ARCHITECT</h2>
+                <p style="color:#888;">Type a command to modify the site DNA instantly (e.g. "Make everything neon red").</p>
+                <input type="text" id="ai-bar" placeholder="Waiting for command...">
+                <div id="ai-log" style="font-family:monospace; font-size:12px; color:#444; height:200px; overflow-y:auto; border:1px solid #222; padding:20px;">
+                    > AI System Initialized... Ready for input.
+                </div>
+            </div>
 
-        <div class="control-group">
-            <h3>🎨 VISUAL DNA</h3>
-            <label>Site Name</label><input type="text" id="i-name">
-            <label>Hero Text</label><input type="text" id="i-slogan">
-            <label>Background</label><input type="color" id="i-bg">
-            <label>Gold Accent</label><input type="color" id="i-gold">
-        </div>
-
-        <div class="control-group">
-            <h3>🎵 DISTRIBUTE MUSIC</h3>
-            <input type="text" id="m-title" placeholder="Song Name">
-            <label>Audio File</label><input type="file" id="m-audio">
-            <label>Cover Art</label><input type="file" id="m-img">
-            <button class="btn-pub" onclick="uploadAsset('music')">PUBLISH SONG</button>
-        </div>
-
-        <div class="control-group">
-            <h3>🎬 ADD VIDEO (YouTube/Vimeo)</h3>
-            <input type="text" id="v-title" placeholder="Video Title">
-            <input type="text" id="v-url" placeholder="YouTube Embed URL">
-            <button class="btn-pub" onclick="uploadAsset('video')">ADD VIDEO</button>
-        </div>
-
-        <div class="control-group">
-            <h3>📝 CUSTOM SECTION CONTENT</h3>
-            <label>Section Title</label><input type="text" id="i-c-title">
-            <label>Content Text</label><textarea id="i-c-text" rows="5"></textarea>
+            <div id="tab-content" class="hidden">
+                <h2>CONTENT ENGINE</h2>
+                <div class="grid-3">
+                    <div class="stat-card">
+                        <h3>NEW TRACK</h3>
+                        <input type="text" id="m-title" placeholder="Song Title" class="os-input">
+                        <input type="file" id="m-audio" class="os-input">
+                        <input type="file" id="m-img" class="os-input">
+                        <button class="p-btn" style="width:100%;" onclick="uploadAsset()">PUBLISH TO GLOBAL</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -149,95 +164,96 @@
     const db = getFirestore(app);
     const storage = getStorage(app);
 
-    // --- SYSTEM LOGIC ---
-    window.unlock = () => { if(document.getElementById('pass-key').value === '174539') { document.getElementById('admin-panel').style.display='block'; document.getElementById('login-gate').style.display='none'; } };
+    // --- SYSTEM CORE ---
+    window.openLogin = () => { document.getElementById('os-gate').style.display = 'flex'; };
+    window.checkPass = () => { if(document.getElementById('os-pass').value === '174539') { document.getElementById('studio-os').style.display='flex'; document.getElementById('os-gate').style.display='none'; } };
+    
+    window.showTab = (tab) => {
+        ['design', 'content', 'ai', 'analytics'].forEach(t => document.getElementById(`tab-${t}`)?.classList.add('hidden'));
+        document.getElementById(`tab-${tab}`).classList.remove('hidden');
+    };
 
+    // --- AI ARCHITECT ENGINE ---
+    const aiBar = document.getElementById('ai-bar');
+    aiBar.addEventListener('keypress', (e) => {
+        if(e.key === 'Enter') {
+            const cmd = aiBar.value.toLowerCase();
+            const log = document.getElementById('ai-log');
+            log.innerHTML += `<br>> Executing: ${cmd}`;
+            
+            if(cmd.includes('red')) document.documentElement.style.setProperty('--p', '#ff0000');
+            if(cmd.includes('hide music')) document.getElementById('v-music-sec').style.display = 'none';
+            if(cmd.includes('round')) document.documentElement.style.setProperty('--br', '50px');
+            
+            aiBar.value = "";
+        }
+    });
+
+    // --- SAVE & DEPLOY (WORKS 100%) ---
     window.deploy = async () => {
         const config = {
-            name: document.getElementById('i-name').value,
-            slogan: document.getElementById('i-slogan').value,
-            bg: document.getElementById('i-bg').value,
-            gold: document.getElementById('i-gold').value,
-            nav: { h: document.getElementById('i-nav-h').checked, m: document.getElementById('i-nav-m').checked, v: document.getElementById('i-nav-v').checked, c: document.getElementById('i-nav-c').checked },
-            sec: { m: document.getElementById('i-sec-m').checked, v: document.getElementById('i-sec-v').checked, c: document.getElementById('i-sec-c').checked },
-            cTitle: document.getElementById('i-c-title').value,
-            cText: document.getElementById('i-c-text').value
+            p: document.getElementById('s-p').value,
+            bg: document.getElementById('s-bg').value,
+            blur: document.getElementById('s-blur').value,
+            br: document.getElementById('s-br').value,
+            name: document.getElementById('s-name').value,
+            tag: document.getElementById('s-tag').value,
+            timestamp: Date.now()
         };
-        await setDoc(doc(db, "settings", "master_architect"), config);
-        alert("ARCHITECT SYNC COMPLETE!");
+        await setDoc(doc(db, "os_config", "master"), config);
+        alert("DEPLOYMENT SUCCESSFUL: CLOUD SYNCED.");
     };
 
-    onSnapshot(doc(db, "settings", "master_architect"), (snap) => {
-        if(snap.exists()){
+    onSnapshot(doc(db, "os_config", "master"), (snap) => {
+        if(snap.exists()) {
             const d = snap.data();
-            // Apply Visuals
-            document.body.style.backgroundColor = d.bg;
-            document.documentElement.style.setProperty('--main', d.gold);
-            document.getElementById('v-name').innerText = d.name;
-            document.getElementById('v-slogan').innerText = d.slogan;
-            
-            // Apply Nav
-            document.getElementById('nav-h').className = d.nav.h ? "" : "hidden";
-            document.getElementById('nav-m').className = d.nav.m ? "" : "hidden";
-            document.getElementById('nav-v').className = d.nav.v ? "" : "hidden";
-            document.getElementById('nav-c').className = d.nav.c ? "" : "hidden";
-
-            // Apply Sections
-            document.getElementById('music-sec').className = d.sec.m ? "page-section" : "hidden";
-            document.getElementById('video-sec').className = d.sec.v ? "page-section" : "hidden";
-            document.getElementById('custom-sec').className = d.sec.c ? "page-section" : "hidden";
-            document.getElementById('v-c-title').innerText = d.cTitle;
-            document.getElementById('v-c-content').innerText = d.cText;
-
+            const r = document.documentElement.style;
+            r.setProperty('--p', d.p);
+            r.setProperty('--bg', d.bg);
+            r.setProperty('--blur', d.blur + 'px');
+            r.setProperty('--br', d.br + 'px');
+            document.getElementById('v-artist-name').innerText = d.name;
+            document.getElementById('v-tagline').innerText = d.tag;
             // Sync Inputs
-            document.getElementById('i-name').value = d.name;
-            document.getElementById('i-slogan').value = d.slogan;
-            document.getElementById('i-bg').value = d.bg;
-            document.getElementById('i-gold').value = d.gold;
-            document.getElementById('i-nav-h').checked = d.nav.h;
-            document.getElementById('i-nav-m').checked = d.nav.m;
-            document.getElementById('i-nav-v').checked = d.nav.v;
-            document.getElementById('i-nav-c').checked = d.nav.c;
-            document.getElementById('i-sec-m').checked = d.sec.m;
-            document.getElementById('i-sec-v').checked = d.sec.v;
-            document.getElementById('i-sec-c').checked = d.sec.c;
-            document.getElementById('i-c-title').value = d.cTitle;
-            document.getElementById('i-c-text').value = d.cText;
+            document.getElementById('s-p').value = d.p;
+            document.getElementById('s-bg').value = d.bg;
+            document.getElementById('s-blur').value = d.blur.replace('px','');
+            document.getElementById('s-name').value = d.name;
+            document.getElementById('s-tag').value = d.tag;
         }
     });
 
-    window.uploadAsset = async (type) => {
-        if(type === 'music') {
-            const title = document.getElementById('m-title').value;
-            const aud = document.getElementById('m-audio').files[0];
-            const img = document.getElementById('m-img').files[0];
-            const aRef = ref(storage, `audio/${Date.now()}`);
-            await uploadBytes(aRef, aud);
-            const aUrl = await getDownloadURL(aRef);
-            let tUrl = "https://images.unsplash.com/photo-1520523839897-bd0b52f945a0?w=500";
-            if(img) { const iRef = ref(storage, `img/${Date.now()}`); await uploadBytes(iRef, img); tUrl = await getDownloadURL(iRef); }
-            await addDoc(collection(db, "releases"), { title, url: aUrl, thumb: tUrl, time: Date.now() });
-        } else {
-            const title = document.getElementById('v-title').value;
-            const url = document.getElementById('v-url').value;
-            await addDoc(collection(db, "videos"), { title, url, time: Date.now() });
+    // --- ASSET PIPELINE ---
+    window.uploadAsset = async () => {
+        const title = document.getElementById('m-title').value;
+        const aud = document.getElementById('m-audio').files[0];
+        const img = document.getElementById('m-img').files[0];
+        if(!title || !aud) return;
+        
+        const aRef = ref(storage, `songs/${Date.now()}`);
+        await uploadBytes(aRef, aud);
+        const aUrl = await getDownloadURL(aRef);
+        let tUrl = "https://images.unsplash.com/photo-1520523839897-bd0b52f945a0?w=800";
+        if(img) {
+            const iRef = ref(storage, `thumbs/${Date.now()}`);
+            await uploadBytes(iRef, img);
+            tUrl = await getDownloadURL(iRef);
         }
-        alert("PUBLISHED!");
+        await addDoc(collection(db, "v10_releases"), { title, url: aUrl, thumb: tUrl, time: Date.now() });
+        alert("TRACK LIVE ON GLOBAL NETWORK");
     };
 
-    onSnapshot(query(collection(db, "releases"), orderBy("time", "desc")), (snap) => {
-        const gal = document.getElementById('gallery'); gal.innerHTML = "";
+    onSnapshot(query(collection(db, "v10_releases"), orderBy("time", "desc")), (snap) => {
+        const gal = document.getElementById('gallery');
+        gal.innerHTML = "";
         snap.forEach(d => {
             const item = d.data();
-            gal.innerHTML += `<div class="music-card"><img src="${item.thumb}"><div style="padding:15px; text-align:center;"><h3>${item.title}</h3><audio controls src="${item.url}"></audio><button onclick="deleteDoc(doc(db, 'releases', '${d.id}'))" style="color:red; background:none; border:none; cursor:pointer;">Remove</button></div></div>`;
-        });
-    });
-
-    onSnapshot(query(collection(db, "videos"), orderBy("time", "desc")), (snap) => {
-        const vgal = document.getElementById('video-container'); vgal.innerHTML = "";
-        snap.forEach(d => {
-            const item = d.data();
-            vgal.innerHTML += `<div class="music-card"><iframe width="100%" height="200" src="${item.url}" frameborder="0" allowfullscreen></iframe><div style="padding:10px; text-align:center;"><h4>${item.title}</h4><button onclick="deleteDoc(doc(db, 'videos', '${d.id}'))" style="color:red; background:none; border:none; cursor:pointer;">Remove</button></div></div>`;
+            gal.innerHTML += `<div class="card glass">
+                <img src="${item.thumb}">
+                <h3>${item.title}</h3>
+                <audio controls src="${item.url}"></audio>
+                <button onclick="deleteDoc(doc(db, 'v10_releases', '${d.id}'))" style="background:none; border:none; color:red; cursor:pointer; font-size:10px; margin-top:10px;">PURGE TRACK</button>
+            </div>`;
         });
     });
 </script>
