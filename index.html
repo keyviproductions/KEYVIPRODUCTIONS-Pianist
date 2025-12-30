@@ -3,144 +3,118 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="view-title">KEYVI OS | Professional Studio</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&family=Playfair+Display:wght@700&family=Syncopate:wght@700&display=swap" rel="stylesheet">
-    <style id="root-vars">
-        :root { --p: #D4AF37; --bg: #000; --txt: #fff; --glass: rgba(255,255,255,0.03); --br: 12px; --blur: 20px; }
-        * { box-sizing: border-box; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
-        body { background: var(--bg); color: var(--txt); font-family: 'Inter', sans-serif; margin: 0; overflow-x: hidden; }
+    <title>KEYVI | Creator Studio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Syncopate:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root { --yt-red: #ff0000; --yt-bg: #0f0f0f; --yt-sidebar: #0f0f0f; --yt-card: #1e1e1e; --p: #D4AF37; }
+        body { background: var(--yt-bg); color: white; font-family: 'Roboto', sans-serif; margin: 0; }
         
-        /* THE VISUAL ENGINE */
-        .glass { background: var(--glass); backdrop-filter: blur(var(--blur)); border: 1px solid rgba(255,255,255,0.1); border-radius: var(--br); }
-        .hero-v10 { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; position: relative; overflow: hidden; }
-        .hero-v10 h1 { font-family: 'Syncopate', sans-serif; font-size: clamp(3rem, 12vw, 8rem); margin: 0; line-height: 0.9; letter-spacing: -5px; }
-        .p-btn { background: var(--p); color: #000; padding: 18px 40px; border-radius: 50px; font-weight: 900; text-decoration: none; text-transform: uppercase; font-size: 12px; border: none; cursor: pointer; }
+        /* ADMIN INTERFACE */
+        #studio-overlay { position: fixed; inset: 0; background: var(--yt-bg); z-index: 999999; display: none; flex-direction: column; }
+        .studio-nav { height: 56px; background: #202020; display: flex; align-items: center; padding: 0 24px; border-bottom: 1px solid #333; justify-content: space-between; }
+        .studio-body { display: flex; flex: 1; }
+        .studio-sidebar { width: 256px; background: var(--yt-sidebar); border-right: 1px solid #333; padding-top: 8px; }
+        .studio-content { flex: 1; padding: 40px; overflow-y: auto; background: #161616; }
         
-        /* MODULAR SECTIONS */
-        .section { padding: 100px 5%; opacity: 1; transform: translateY(0); }
-        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
-        .card { padding: 20px; position: relative; border: 1px solid rgba(255,255,255,0.05); }
-        .card img { width: 100%; border-radius: 8px; margin-bottom: 20px; aspect-ratio: 1; object-fit: cover; }
+        /* THE "UPLOAD" MODAL (YOUTUBE STYLE) */
+        .upload-flow { background: #282828; width: 90%; max-width: 960px; height: 80vh; margin: auto; border-radius: 12px; display: flex; flex-direction: column; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+        .flow-header { padding: 20px; border-bottom: 1px solid #3e3e3e; display: flex; justify-content: space-between; }
+        .flow-body { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; padding: 24px; flex: 1; overflow-y: auto; }
         
-        /* INVISIBLE ADMIN TRIGGER */
-        #admin-trigger { position: fixed; bottom: 0; right: 0; width: 50px; height: 50px; cursor: pointer; z-index: 999999; opacity: 0; }
-
-        /* KEYVI STUDIO OS PANEL */
-        #studio-os { position: fixed; inset: 15px; background: #080808; z-index: 1000000; border-radius: 20px; border: 1px solid #333; display: none; overflow: hidden; display: flex; flex-direction: column; color: #fff; box-shadow: 0 50px 100px rgba(0,0,0,0.9); }
-        .os-header { padding: 20px 30px; background: #111; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #222; }
-        .os-body { display: flex; flex: 1; overflow: hidden; }
-        .os-sidebar { width: 280px; background: #0a0a0a; border-right: 1px solid #222; padding: 20px; overflow-y: auto; }
-        .os-content { flex: 1; padding: 40px; overflow-y: auto; background: #050505; }
-        .tool-tab { padding: 12px 20px; border-radius: 8px; cursor: pointer; margin-bottom: 5px; font-size: 13px; font-weight: 600; color: #888; }
-        .tool-tab:hover, .tool-tab.active { background: #1a1a1a; color: var(--p); }
+        /* INPUT STYLING */
+        .yt-input-wrap { border: 1px solid #606060; border-radius: 4px; padding: 8px 12px; margin-bottom: 20px; }
+        .yt-input-wrap label { font-size: 12px; color: #aaa; display: block; }
+        .yt-input-wrap input, .yt-input-wrap textarea { background: transparent; border: none; color: white; width: 100%; outline: none; font-size: 15px; padding-top: 4px; }
         
-        /* INPUTS */
-        .os-input { background: #111; border: 1px solid #333; color: #fff; padding: 12px; border-radius: 8px; width: 100%; margin: 10px 0; font-family: inherit; }
-        .stat-card { background: #111; padding: 20px; border-radius: 12px; border: 1px solid #222; }
+        .thumbnail-box { background: #1a1a1a; border: 2px dashed #444; height: 120px; display: flex; align-items: center; justify-content: center; cursor: pointer; text-align: center; font-size: 13px; }
+        .preview-pane { background: #000; aspect-ratio: 16/9; border-radius: 4px; position: sticky; top: 0; }
         
-        /* AI COMMAND BAR */
-        #ai-bar { background: #1a1a1a; border: 2px solid var(--p); color: var(--p); padding: 15px; border-radius: 10px; font-family: 'Space Mono', monospace; width: 100%; margin-bottom: 30px; }
+        /* FRONTEND RELEASES */
+        .yt-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; padding: 40px; }
+        .yt-card { cursor: pointer; }
+        .yt-thumb { width: 100%; aspect-ratio: 16/9; background: #333; border-radius: 12px; object-fit: cover; }
+        .yt-info { margin-top: 12px; display: flex; gap: 12px; }
+        .yt-avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--p); }
         
-        .hidden { display: none !important; }
+        #admin-btn { position: fixed; bottom: 20px; right: 20px; opacity: 0.05; cursor: pointer; z-index: 100; }
     </style>
 </head>
-<body id="master-body">
+<body>
 
-<div id="admin-trigger" onclick="openLogin()"></div>
+<div id="admin-btn" onclick="openStudio()">🔑</div>
 
-<nav id="v-nav" class="glass" style="position:fixed; top:20px; left:50%; transform:translateX(-50%); width:90%; padding:15px 40px; display:flex; justify-content:space-between; align-items:center; z-index:999;">
-    <div id="v-logo" style="font-weight:900; letter-spacing:2px;">KEYVI</div>
-    <div style="display:flex; gap:30px; font-size:11px; font-weight:bold;" id="v-nav-links">
-        <a href="#music" style="color:#fff; text-decoration:none;">MUSIC</a>
-        <a href="#videos" style="color:#fff; text-decoration:none;">VIDEOS</a>
-        <a href="#newsletter" style="color:#fff; text-decoration:none;">JOIN</a>
-    </div>
+<nav style="height:56px; display:flex; align-items:center; padding: 0 24px; background:rgba(15,15,15,0.95); position:sticky; top:0; z-index:10;">
+    <span style="font-family:Syncopate; font-size:18px; color:var(--p);">KEYVI STUDIO</span>
 </nav>
 
-<section class="hero-v10" id="v-hero-sec">
-    <h1 id="v-artist-name">KEYVI</h1>
-    <p id="v-tagline" style="opacity:0.6; margin-top:20px; letter-spacing:5px;">PREMIUM PIANO PRODUCTIONS</p>
-    <div id="v-hero-btns" style="margin-top:40px;">
-        <button class="p-btn" id="v-cta">LISTEN NOW</button>
+<div class="yt-grid" id="public-gallery">
     </div>
-</section>
 
-<section class="section" id="v-music-sec">
-    <h2 style="text-align:center; margin-bottom:60px; font-size:3rem; font-family: 'Syncopate';">LATEST RELEASES</h2>
-    <div id="gallery" class="grid-3"></div>
-</section>
-
-<div id="os-gate" style="position:fixed; inset:0; background:#000; z-index:2000000; display:none; flex-direction:column; justify-content:center; align-items:center;">
-    <h1 style="color:var(--p); font-family:Syncopate;">ENCRYPTED ACCESS</h1>
-    <input type="password" id="os-pass" style="background:transparent; border:none; border-bottom:2px solid var(--p); color:#fff; font-size:4rem; text-align:center; width:300px; outline:none;">
-    <button onclick="checkPass()" style="margin-top:40px; background:none; border:1px solid #fff; color:#fff; padding:10px 40px; cursor:pointer;">AUTHORIZE SYSTEM</button>
-</div>
-
-<div id="studio-os" style="display:none;">
-    <div class="os-header">
-        <div style="display:flex; align-items:center; gap:10px;">
-            <div style="width:12px; height:12px; background:#ff5f56; border-radius:50%;"></div>
-            <div style="width:12px; height:12px; background:#ffbd2e; border-radius:50%;"></div>
-            <div style="width:12px; height:12px; background:#27c93f; border-radius:50%;"></div>
-            <span style="margin-left:20px; font-weight:900; font-size:12px;">KEYVI STUDIO OS v10.4.2</span>
+<div id="studio-overlay">
+    <div class="studio-nav">
+        <div style="font-weight:bold; color:var(--p);">CREATOR STUDIO</div>
+        <div style="display:flex; gap:20px;">
+            <button onclick="showUpload()" style="background:var(--p); border:none; padding:8px 16px; font-weight:bold; cursor:pointer; border-radius:2px;">CREATE</button>
+            <button onclick="closeStudio()" style="background:#333; color:white; border:none; padding:8px 16px; cursor:pointer;">EXIT</button>
         </div>
-        <button onclick="deploy()" style="background:var(--p); border:none; padding:8px 25px; border-radius:5px; font-weight:900; cursor:pointer;">DEPLOY LIVE</button>
     </div>
-    
-    <div class="os-body">
-        <div class="os-sidebar">
-            <div class="tool-tab active" onclick="showTab('design')">🎨 DESIGN SYSTEM</div>
-            <div class="tool-tab" onclick="showTab('content')">🎵 CONTENT MANAGER</div>
-            <div class="tool-tab" onclick="showTab('ai')">🤖 AI ARCHITECT</div>
-            <div class="tool-tab" onclick="showTab('analytics')">📈 REAL-TIME STATS</div>
-            <div class="tool-tab" onclick="location.reload()" style="margin-top:40px; color:red;">LOGOUT</div>
+
+    <div class="studio-body">
+        <div class="studio-sidebar">
+            <div style="padding:10px 24px; color:var(--p); background:rgba(212,175,55,0.1); border-left:3px solid var(--p);">Content</div>
+            <div style="padding:10px 24px; color:#aaa;">Analytics</div>
+            <div style="padding:10px 24px; color:#aaa;">Customization</div>
         </div>
         
-        <div class="os-content" id="os-content">
-            <div id="tab-design">
-                <h2>DESIGN SYSTEM</h2>
-                <div class="grid-3">
-                    <div class="stat-card">
-                        <label>Primary Brand Color</label>
-                        <input type="color" id="s-p" class="os-input">
-                        <label>Background DNA</label>
-                        <input type="color" id="s-bg" class="os-input">
-                    </div>
-                    <div class="stat-card">
-                        <label>Glass Blur Intensity</label>
-                        <input type="range" id="s-blur" min="0" max="100" class="os-input">
-                        <label>Corner Rounding (px)</label>
-                        <input type="range" id="s-br" min="0" max="100" class="os-input">
-                    </div>
-                    <div class="stat-card">
-                        <label>Artist Name</label>
-                        <input type="text" id="s-name" class="os-input">
-                        <label>Sub-Tagline</label>
-                        <input type="text" id="s-tag" class="os-input">
-                    </div>
-                </div>
-            </div>
+        <div class="studio-content" id="studio-list-view">
+            <h2>Channel content</h2>
+            <table style="width:100%; text-align:left; border-collapse: collapse;">
+                <thead style="border-bottom:1px solid #333; color:#aaa; font-size:12px;">
+                    <tr><th>VIDEO / TRACK</th><th>VISIBILITY</th><th>DATE</th></tr>
+                </thead>
+                <tbody id="studio-table-body"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
 
-            <div id="tab-ai" class="hidden">
-                <h2>AI REAL-TIME ARCHITECT</h2>
-                <p style="color:#888;">Type a command to modify the site DNA instantly (e.g. "Make everything neon red").</p>
-                <input type="text" id="ai-bar" placeholder="Waiting for command...">
-                <div id="ai-log" style="font-family:monospace; font-size:12px; color:#444; height:200px; overflow-y:auto; border:1px solid #222; padding:20px;">
-                    > AI System Initialized... Ready for input.
+<div id="upload-modal" style="position:fixed; inset:0; background:rgba(0,0,0,0.8); z-index:1000000; display:none; align-items:center;">
+    <div class="upload-flow">
+        <div class="flow-header">
+            <span id="flow-title">Upload Content</span>
+            <button onclick="document.getElementById('upload-modal').style.display='none'" style="background:none; border:none; color:white; cursor:pointer;">✕</button>
+        </div>
+        <div class="flow-body">
+            <div class="flow-left">
+                <h3>Details</h3>
+                <div class="yt-input-wrap">
+                    <label>Title (required)</label>
+                    <input type="text" id="up-title" placeholder="Add a title that describes your content">
                 </div>
+                <div class="yt-input-wrap">
+                    <label>Description</label>
+                    <textarea id="up-desc" rows="4" placeholder="Tell viewers about your content"></textarea>
+                </div>
+                <h3>Thumbnail</h3>
+                <p style="font-size:12px; color:#aaa;">Select or upload a picture that shows what's in your content.</p>
+                <input type="file" id="up-img" accept="image/*">
+                
+                <h3 style="margin-top:30px;">Media File</h3>
+                <input type="file" id="up-media" accept="audio/*,video/*">
             </div>
-
-            <div id="tab-content" class="hidden">
-                <h2>CONTENT ENGINE</h2>
-                <div class="grid-3">
-                    <div class="stat-card">
-                        <h3>NEW TRACK</h3>
-                        <input type="text" id="m-title" placeholder="Song Title" class="os-input">
-                        <input type="file" id="m-audio" class="os-input">
-                        <input type="file" id="m-img" class="os-input">
-                        <button class="p-btn" style="width:100%;" onclick="uploadAsset()">PUBLISH TO GLOBAL</button>
-                    </div>
+            <div class="flow-right">
+                <div class="preview-pane">
+                   <div style="height:100%; display:flex; align-items:center; justify-content:center; color:#444;">Video Preview</div>
                 </div>
+                <div style="margin-top:20px;">
+                    <p style="font-size:12px; color:#aaa;">Visibility</p>
+                    <select id="up-vis" style="width:100%; background:#1a1a1a; color:white; padding:10px; border:1px solid #444;">
+                        <option value="public">Public</option>
+                        <option value="private">Private (Admin only)</option>
+                    </select>
+                </div>
+                <button onclick="startUpload()" style="width:100%; margin-top:40px; background:#3ea6ff; color:black; border:none; padding:12px; font-weight:bold; cursor:pointer; border-radius:2px;">PUBLISH</button>
+                <div id="up-progress" style="margin-top:10px; font-size:12px; color:var(--p);"></div>
             </div>
         </div>
     </div>
@@ -148,7 +122,7 @@
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getFirestore, doc, setDoc, onSnapshot, collection, addDoc, query, orderBy, deleteDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
     import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
 
     const firebaseConfig = {
@@ -164,96 +138,90 @@
     const db = getFirestore(app);
     const storage = getStorage(app);
 
-    // --- SYSTEM CORE ---
-    window.openLogin = () => { document.getElementById('os-gate').style.display = 'flex'; };
-    window.checkPass = () => { if(document.getElementById('os-pass').value === '174539') { document.getElementById('studio-os').style.display='flex'; document.getElementById('os-gate').style.display='none'; } };
-    
-    window.showTab = (tab) => {
-        ['design', 'content', 'ai', 'analytics'].forEach(t => document.getElementById(`tab-${t}`)?.classList.add('hidden'));
-        document.getElementById(`tab-${tab}`).classList.remove('hidden');
+    // --- NAVIGATION ---
+    window.openStudio = () => { 
+        const pass = prompt("Enter Studio Passcode:");
+        if(pass === '174539') document.getElementById('studio-overlay').style.display='flex'; 
     };
+    window.closeStudio = () => document.getElementById('studio-overlay').style.display='none';
+    window.showUpload = () => document.getElementById('upload-modal').style.display='flex';
 
-    // --- AI ARCHITECT ENGINE ---
-    const aiBar = document.getElementById('ai-bar');
-    aiBar.addEventListener('keypress', (e) => {
-        if(e.key === 'Enter') {
-            const cmd = aiBar.value.toLowerCase();
-            const log = document.getElementById('ai-log');
-            log.innerHTML += `<br>> Executing: ${cmd}`;
-            
-            if(cmd.includes('red')) document.documentElement.style.setProperty('--p', '#ff0000');
-            if(cmd.includes('hide music')) document.getElementById('v-music-sec').style.display = 'none';
-            if(cmd.includes('round')) document.documentElement.style.setProperty('--br', '50px');
-            
-            aiBar.value = "";
-        }
-    });
+    // --- UPLOAD PROCESS ---
+    window.startUpload = async () => {
+        const title = document.getElementById('up-title').value;
+        const desc = document.getElementById('up-desc').value;
+        const mediaFile = document.getElementById('up-media').files[0];
+        const thumbFile = document.getElementById('up-img').files[0];
+        const vis = document.getElementById('up-vis').value;
+        const prog = document.getElementById('up-progress');
 
-    // --- SAVE & DEPLOY (WORKS 100%) ---
-    window.deploy = async () => {
-        const config = {
-            p: document.getElementById('s-p').value,
-            bg: document.getElementById('s-bg').value,
-            blur: document.getElementById('s-blur').value,
-            br: document.getElementById('s-br').value,
-            name: document.getElementById('s-name').value,
-            tag: document.getElementById('s-tag').value,
-            timestamp: Date.now()
-        };
-        await setDoc(doc(db, "os_config", "master"), config);
-        alert("DEPLOYMENT SUCCESSFUL: CLOUD SYNCED.");
-    };
+        if(!title || !mediaFile) return alert("Title and Media File are required.");
 
-    onSnapshot(doc(db, "os_config", "master"), (snap) => {
-        if(snap.exists()) {
-            const d = snap.data();
-            const r = document.documentElement.style;
-            r.setProperty('--p', d.p);
-            r.setProperty('--bg', d.bg);
-            r.setProperty('--blur', d.blur + 'px');
-            r.setProperty('--br', d.br + 'px');
-            document.getElementById('v-artist-name').innerText = d.name;
-            document.getElementById('v-tagline').innerText = d.tag;
-            // Sync Inputs
-            document.getElementById('s-p').value = d.p;
-            document.getElementById('s-bg').value = d.bg;
-            document.getElementById('s-blur').value = d.blur.replace('px','');
-            document.getElementById('s-name').value = d.name;
-            document.getElementById('s-tag').value = d.tag;
-        }
-    });
+        prog.innerText = "Step 1: Uploading Media...";
+        const mRef = ref(storage, `content/${Date.now()}_${mediaFile.name}`);
+        await uploadBytes(mRef, mediaFile);
+        const mUrl = await getDownloadURL(mRef);
 
-    // --- ASSET PIPELINE ---
-    window.uploadAsset = async () => {
-        const title = document.getElementById('m-title').value;
-        const aud = document.getElementById('m-audio').files[0];
-        const img = document.getElementById('m-img').files[0];
-        if(!title || !aud) return;
-        
-        const aRef = ref(storage, `songs/${Date.now()}`);
-        await uploadBytes(aRef, aud);
-        const aUrl = await getDownloadURL(aRef);
+        prog.innerText = "Step 2: Uploading Thumbnail...";
         let tUrl = "https://images.unsplash.com/photo-1520523839897-bd0b52f945a0?w=800";
-        if(img) {
-            const iRef = ref(storage, `thumbs/${Date.now()}`);
-            await uploadBytes(iRef, img);
-            tUrl = await getDownloadURL(iRef);
+        if(thumbFile) {
+            const tRef = ref(storage, `thumbs/${Date.now()}`);
+            await uploadBytes(tRef, thumbFile);
+            tUrl = await getDownloadURL(tRef);
         }
-        await addDoc(collection(db, "v10_releases"), { title, url: aUrl, thumb: tUrl, time: Date.now() });
-        alert("TRACK LIVE ON GLOBAL NETWORK");
+
+        prog.innerText = "Step 3: Finalizing Checks...";
+        await addDoc(collection(db, "yt_studio_v1"), {
+            title, desc, media: mUrl, thumb: tUrl, visibility: vis, date: new Date().toLocaleDateString(), timestamp: Date.now()
+        });
+
+        prog.innerText = "Upload Complete!";
+        setTimeout(() => {
+            document.getElementById('upload-modal').style.display='none';
+            prog.innerText = "";
+        }, 1500);
     };
 
-    onSnapshot(query(collection(db, "v10_releases"), orderBy("time", "desc")), (snap) => {
-        const gal = document.getElementById('gallery');
-        gal.innerHTML = "";
+    // --- DATA SYNC ---
+    onSnapshot(query(collection(db, "yt_studio_v1"), orderBy("timestamp", "desc")), (snap) => {
+        const gallery = document.getElementById('public-gallery');
+        const table = document.getElementById('studio-table-body');
+        gallery.innerHTML = "";
+        table.innerHTML = "";
+
         snap.forEach(d => {
             const item = d.data();
-            gal.innerHTML += `<div class="card glass">
-                <img src="${item.thumb}">
-                <h3>${item.title}</h3>
-                <audio controls src="${item.url}"></audio>
-                <button onclick="deleteDoc(doc(db, 'v10_releases', '${d.id}'))" style="background:none; border:none; color:red; cursor:pointer; font-size:10px; margin-top:10px;">PURGE TRACK</button>
-            </div>`;
+            
+            // Public Gallery
+            if(item.visibility === 'public') {
+                gallery.innerHTML += `
+                    <div class="yt-card">
+                        <img src="${item.thumb}" class="yt-thumb">
+                        <div class="yt-info">
+                            <div class="yt-avatar"></div>
+                            <div>
+                                <div style="font-weight:bold;">${item.title}</div>
+                                <div style="font-size:12px; color:#aaa; margin-top:4px;">Keyvi Productions</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Studio Table
+            table.innerHTML += `
+                <tr style="border-bottom:1px solid #222;">
+                    <td style="padding:15px; display:flex; gap:10px; align-items:center;">
+                        <img src="${item.thumb}" style="width:100px; border-radius:4px;">
+                        <div>
+                            <div style="font-size:14px;">${item.title}</div>
+                            <div style="font-size:11px; color:#666;">${item.desc.substring(0,30)}...</div>
+                        </div>
+                    </td>
+                    <td style="color:${item.visibility === 'public' ? '#27c93f' : '#aaa'}">${item.visibility}</td>
+                    <td style="font-size:12px; color:#aaa;">${item.date} <br> <button onclick="deleteDoc(doc(db, 'yt_studio_v1', '${d.id}'))" style="background:none; border:none; color:red; cursor:pointer; font-size:10px;">Delete</button></td>
+                </tr>
+            `;
         });
     });
 </script>
